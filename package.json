@@ -1,0 +1,44 @@
+{
+  "name": "app-skeleton",
+  "version": "0.0.2",
+  "description": "",
+  "scripts": {
+    "build": "webpack -p",
+    "start": "webpack -w"
+  },
+  "dependencies": {
+    "async": "*",
+    "babel-core": "*",
+    "babel-loader": "*",
+    "babel-plugin-add-module-exports": "*",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
+    "body-parser": "*",
+    "compression": "*",
+    "css-loader": "*",
+    "express": "*",
+    "file-loader": "*",
+    "html-webpack-plugin": "*",
+    "jquery": "*",
+    "react": "*",
+    "react-dom": "*",
+    "react-router": "*",
+    "react-slider": "^0.7.0",
+    "semantic-ui-css": "^2.2.4",
+    "semantic-ui-react": "^0.64.5",
+    "style-loader": "*",
+    "superagent": "3.3.1",
+    "url-loader": "*",
+    "webpack": "*"
+  },
+  "devDependencies": {
+    "standard": "*",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "standard": {
+    "ignore": [
+      "public/**",
+      "scripts/*"
+    ]
+  }
+}
