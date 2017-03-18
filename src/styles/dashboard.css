@@ -35,8 +35,8 @@ table.selectable tr {
   padding-bottom: 7em;
 }
 
-.dropdown.asset-list {
-  min-width: 200px;
+.ui.dropdown.symbol-selector {
+  min-width: 300px;
 }
 
 
@@ -70,4 +70,39 @@ table.selectable tr {
   top: 0.73rem;
   height: 4px;
   background-color: rgba(0,0,0,.10);
+}
+
+.forest-view .visualization {
+  height: 500px;
+}
+
+.forest-view svg {
+  width: 100%;
+  height: 100%;
+}
+
+.forest-view .node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.forest-view .link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 3px;
+  opacity: 0.7;
+}
+
+.forest-view .nodelabel {
+  stroke: none;
+  fill: #666;
+  font-size: 90%;
+  text-anchor: middle;
+}
+
+.forest-view .linklabel {
+  stroke: none;
+  fill: #999;
+  font-size: 70%;
+  text-anchor:middle;
 }

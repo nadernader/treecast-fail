@@ -7,20 +7,28 @@ const Api = require('./../../utils/Api')
 //import TICKERS from './../../utils/Constants'
 require('./../../utils/Constants')
 
+const optionize = (label) => {
+  return {
+    key: label,
+    text: label,
+    value: label
+  }
+}
 
 export default class CreateStrategy extends React.Component {
   create(e) {
     e && e.preventDefault()
     window.strategyCreated = true
+    this.props.history.pushState(null, `/home`);
   }
   render () {
-    let timelineOptions = ['1 day', '1 week', '1 month', '3 months', '6 months', '9 months', '1 year', '2 years', '5 years', '10 years', '25 years', '50 years'].map(label => {
-      return {
-        key: label,
-        text: label,
-        value: label
-      }
-    })
+    let timelineOptions = [
+      '1 day - 1 week',
+      '1 week - 1 month',
+      '1-3 months',
+      '4-6 months',
+      '7-12 months'
+    ].map(optionize)
     let riskOptions = ['Low', 'Medium', 'High'].map(label => {
       return {
         key: label,
@@ -28,28 +36,20 @@ export default class CreateStrategy extends React.Component {
         value: label
       }
     })
-    let tickerOptions = window.TICKERS.slice(100, 300).map(ticker => {
+    let tickerOptions = window.TICKERS.map(ticker => {
       return {
-        key: ticker.Symbol,
-        text: `$${ticker.Symbol} - ${ticker.Name}`,
-        value: ticker.Symbol
+        key: ticker.symbol,
+        text: `${ticker.symbol} - ${ticker.name}`,
+        value: ticker.symbol
       }
     })
 
-    let assetClassOptions = ['Equities', 'Fixed Income', 'Cash/Currency'].map(label => {
-      return {
-        key: label,
-        text: label,
-        value: label
-      }
-    })
-    let assetSubClassOptions = ['Small Cap', 'Large Cap', 'Mid Cap', 'MicroCap', 'US', 'Foreign Developed', 'Foreign Emerging'].map(label => {
-      return {
-        key: label,
-        text: label,
-        value: label
-      }
-    })
+    let familiarIndexesOptions = tickerOptions
+
+    let marketTypeOptions = ['Developed', 'Emerging'].map(optionize)
+    let developedMarketLocationOptions = ['United Kingdom', 'USA', 'Canada', 'France', 'Switzerland', 'Belgium', 'Hong Kong', 'South Korea'].map(optionize)
+    let emergingMarketLocationOptions = ['Argentina', 'Mexico', 'Brazil', 'Chile', 'New Zealand', 'Indonesia', 'Singapore', 'India', 'Malaysia', 'China'].map(optionize)
+    let assetSubClassOptions = ['Small Cap', 'Large Cap', 'Mid Cap', 'MicroCap', 'US', 'Foreign Developed', 'Foreign Emerging'].map(optionize)
     return (
       <div className='home-section'>
         <h2>Create Strategy</h2>
@@ -61,28 +61,28 @@ export default class CreateStrategy extends React.Component {
             <label>I want to invest</label>
             <input placeholder='' />
           </Form.Field>
-          <Form.Field inline>
-            <label>Assets I currently own</label>
-            <Dropdown className='asset-list' placeholder='' search selection multiple options={tickerOptions} />
-          </Form.Field>
 
           <Divider hidden />
           <h4>Assets I'm interested in</h4>
           <Divider />
           <Form.Field inline>
-            <label>Asset Class</label>
-            <Dropdown placeholder='' selection options={assetClassOptions} />
+            <label>Market Type</label>
+            <Dropdown placeholder='' selection multiple options={marketTypeOptions} />
           </Form.Field>
           <Form.Field inline>
-            <label>Asset Sub-Class</label>
-            <Dropdown placeholder='' selection options={assetSubClassOptions} />
+            <label>Market Location</label>
+            <Dropdown placeholder='' selection multiple options={developedMarketLocationOptions} />
+          </Form.Field>
+          <Form.Field inline>
+            <label>Indexes I want in My Strategy</label>
+            <Dropdown className='symbol-selector' placeholder='' selection multiple options={familiarIndexesOptions} />
           </Form.Field>
 
           <Divider hidden />
           <h4>Strategy Settings</h4>
           <Divider />
           <Form.Field inline>
-            <label>Timeline</label>
+            <label>Estimated Timeline</label>
             <Dropdown placeholder='' selection options={timelineOptions} />
           </Form.Field>
           <Form.Field inline>
