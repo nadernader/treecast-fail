@@ -24,7 +24,7 @@ export default class HomeSection extends React.Component {
                 <Table.Row onClick={() => { document.location.href = '/strategies/1'}}>
                   <Table.Cell>My Demo Strategy</Table.Cell>
                   <Table.Cell>1 minute ago</Table.Cell>
-                  <Table.Cell textAlign='center'><div className='ui green label'>27.9%</div></Table.Cell>
+                  <Table.Cell textAlign='center'><div className='ui green label'>7.11%</div></Table.Cell>
                   <Table.Cell textAlign='center'>
                     <Button basic icon='trash'></Button>
                     <Button basic icon='share'></Button>
