@@ -10,9 +10,7 @@ const data = [
   {name: 'Group C', value: 300, fill: '#FFBB28'},
   {name: 'Group D', value: 200, fill: '#FF8042'}
 ];*/
-const data = [{"name":"^GSPC","value":4980,"fill":"#0088FE"},{"name":"000001.SS","value":2310,"fill":"#00C49F"},{"name":"^BVSP","value":1530,"fill":"#FFBB28"},{"name":"^tnx","value":1180,"fill":"#FF8042"}]
-
-const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
+const data = [{"name":"SNAP","value":2000,"fill":"#8884d8"},{"name":"XOM","value":1500,"fill":"#83a6ed"},{"name":"JNJ","value":1700,"fill":"#8dd1e1"},{"name":"TLT","value":3000,"fill":"#82ca9d"},{"name":"JPM","value":1200,"fill":"#a4de6c"},{"name":"MMM","value":600,"fill":"#d0ed57"}]
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -80,9 +78,11 @@ export default class StrategySection extends React.Component {
       return {
         name: item.ticker.symbol,
         value: item.allocationAmount,
-        fill: colors[i++]
+        fill: item.fill
       }
-    })*/
+    })
+    console.log('data', JSON.stringify(data))
+    */
     return (
     	<PieChart width={400} height={300} onMouseEnter={(data, index) => this.onPieEnter(data, index)}>
         <Pie

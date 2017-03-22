@@ -1,7 +1,7 @@
 
 const React = require('react')
 import { Link } from 'react-router'
-import { Form, Button, Message, Icon, Segment, Checkbox, Divider, Dropdown } from 'semantic-ui-react'
+import { Form, Button, Message, Icon, Segment, Checkbox, Divider, Dropdown, Step, Label, Input, Progress } from 'semantic-ui-react'
 const ReactSlider = require('react-slider')
 const Api = require('./../../utils/Api')
 //import TICKERS from './../../utils/Constants'
@@ -16,12 +16,44 @@ const optionize = (label) => {
 }
 
 export default class CreateStrategy extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      step: 1,
+      progress: 0
+    }
+  }
   create(e) {
     e && e.preventDefault()
-    window.strategyCreated = true
-    this.props.history.pushState(null, `/home`);
+    let { step, progress } = this.state
+    step++
+    progress = 10
+    this.setState({ step, progress })
+    let loadingDone = false
+    let interval = setInterval(() => {
+      progress = this.state.progress
+      progress += 4
+      this.setState({progress})
+      if (progress >= 90) {
+        progress = 100
+        this.setState({progress})
+        clearInterval(interval)
+        loadingDone = true
+        setTimeout(() => {
+          window.strategyCreated = true
+          this.props.history.pushState(null, `/strategies/1`);
+        }, 500)
+      }
+    }, 50)
+  }
+  next(e) {
+    e && e.preventDefault()
+    let { step } = this.state
+    step++
+    this.setState({ step })
   }
   render () {
+    let { step, progress } = this.state
     let timelineOptions = [
       '1 day - 1 week',
       '1 week - 1 month',
@@ -45,64 +77,73 @@ export default class CreateStrategy extends React.Component {
     })
 
     let familiarIndexesOptions = tickerOptions
-
+/*
     let marketTypeOptions = ['Developed', 'Emerging'].map(optionize)
     let developedMarketLocationOptions = ['United Kingdom', 'USA', 'Canada', 'France', 'Switzerland', 'Belgium', 'Hong Kong', 'South Korea'].map(optionize)
     let emergingMarketLocationOptions = ['Argentina', 'Mexico', 'Brazil', 'Chile', 'New Zealand', 'Indonesia', 'Singapore', 'India', 'Malaysia', 'China'].map(optionize)
     let assetSubClassOptions = ['Small Cap', 'Large Cap', 'Mid Cap', 'MicroCap', 'US', 'Foreign Developed', 'Foreign Emerging'].map(optionize)
+*/
+    let interestOptions = window.INTERESTS.map(item => {
+      return {
+        key: item.id,
+        text: item.name ? `${item.id} - ${item.name}` : (item.id),
+        value: item.id
+      }
+    })
     return (
-      <div className='home-section'>
+      <div className='home-section text ui container'>
         <h2>Create Strategy</h2>
-        <Form onSubmit={(e) => this.create(e)}>
-          <Divider hidden />
-          <h4>My Assets</h4>
-          <Divider />
-          <Form.Field inline>
-            <label>I want to invest</label>
-            <input placeholder='' />
-          </Form.Field>
-
-          <Divider hidden />
-          <h4>Assets I'm interested in</h4>
-          <Divider />
-          <Form.Field inline>
-            <label>Market Type</label>
-            <Dropdown placeholder='' selection multiple options={marketTypeOptions} />
-          </Form.Field>
-          <Form.Field inline>
-            <label>Market Location</label>
-            <Dropdown placeholder='' selection multiple options={developedMarketLocationOptions} />
-          </Form.Field>
-          <Form.Field inline>
-            <label>Indexes I want in My Strategy</label>
-            <Dropdown className='symbol-selector' placeholder='' selection multiple options={familiarIndexesOptions} />
-          </Form.Field>
-
-          <Divider hidden />
-          <h4>Strategy Settings</h4>
-          <Divider />
-          <Form.Field inline>
-            <label>Estimated Timeline</label>
-            <Dropdown placeholder='' selection options={timelineOptions} />
-          </Form.Field>
-          <Form.Field inline>
-            <label>Risk/Reward Scale</label>
-            <Dropdown placeholder='' selection options={riskOptions} />
-          </Form.Field>
-          <Form.Field inline>
-            <label>Strategy Name</label>
-            <input placeholder='' />
-          </Form.Field>
-
-          <Divider hidden />
-          <Form.Field>
-            <Checkbox label='I agree to the Terms and Conditions' />
-          </Form.Field>
-          <Button type='submit' primary>
-            Save
-          </Button>
-          &nbsp;<Link to='/home'>Cancel</Link>
-        </Form>
+        <Step.Group stackable='tablet' fluid>
+          <Step active={(step == 1)} completed={(step > 1)} icon='dollar' title='Amount' />
+          <Step active={(step == 2)} completed={(step > 2)} icon='lightbulb' title='Interests' />
+          <Step active={(step == 3)} completed={(step > 3)} disabled icon='exchange' title='Save &amp; Trade' />
+        </Step.Group>
+        <Segment className='create-strategy-wizard'>
+          { (step == 1 ) && (
+            <Form onSubmit={(e) => this.next(e)} size='huge'>
+              <Form.Field inline>
+                <label>I want to invest</label>
+                <Input labelPosition='right' type='text' placeholder='Amount'>
+                  <Label basic>$</Label>
+                  <input />
+                  <Label>.00</Label>
+                </Input>
+              </Form.Field>
+              <Button fluid type='submit' size='big' primary onClick={(e) => this.next(e)}>
+                Next
+              </Button>
+            </Form>
+          )}
+          { (step == 2 ) && (
+            <Form onSubmit={(e) => this.next(e)} size='huge'>
+              <Form.Field inline>
+                <label>I want to build my portfolio around</label>
+              </Form.Field>
+              <Dropdown placeholder='Search' fluid selection search multiple options={interestOptions} />
+              <Divider hidden />
+              <Button fluid type='submit' size='big' primary onClick={(e) => this.next(e)}>
+                Next
+              </Button>
+            </Form>
+          )}
+          { (step == 3 ) && (
+            <Form onSubmit={(e) => this.create(e)} size='huge'>
+              <Form.Field inline>
+                <label>My strategy is called</label>
+                <input placeholder='Enter name' />
+              </Form.Field>
+              <Form.Field>
+                <Checkbox label='I agree to the Terms and Conditions' />
+              </Form.Field>
+              <Button fluid type='submit' size='big' primary>
+                Calculate
+              </Button>
+            </Form>
+          )}
+          { (step == 4 ) && (
+            <Progress size='huge' percent={progress} active color='blue'>Calculating...</Progress>
+          )}
+        </Segment>
       </div>
     )
   }

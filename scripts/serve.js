@@ -14,7 +14,7 @@ app.use(function(req, res, next) {
   res.sendFile(path.resolve(__dirname, '../dist', 'index.html'))
 });
 
-var server = app.listen(3000, function () {
+var server = app.listen(3050, function () {
   var host = server.address().address;
   var port = server.address().port;
 

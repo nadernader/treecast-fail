@@ -11,8 +11,13 @@ import trade_etrade from '../../images/trade_etrade.png';
 import trade_robinhood from '../../images/trade_robinhood.png';
 import trade_schwab from '../../images/trade_schwab.png';
 
-const tickerById = (id) => {
-  return window.TICKERS.filter(ticker => ticker.id == id)[0]
+const tickerBySymbol = (symbol) => {
+  return window.TICKERS.filter(ticker => ticker.symbol == symbol)[0]
+}
+
+const today = () => {
+  let date = new Date();
+  return [date.getMonth()+1, date.getDate(), date.getFullYear()].join('/')
 }
 
 export default class StrategySection extends React.Component {
@@ -29,60 +34,81 @@ export default class StrategySection extends React.Component {
   render () {
     let portfolio = [
       {
-        ticker: tickerById(8),
-        allocationPercentage: 49.8,
-        allocationAmount: 49.8 * 100,
-        fill: '#0088FE'
+        ticker: tickerBySymbol('SNAP'),
+        allocationPercentage: 20,
+        allocationAmount: 20 * 100,
+        fill: '#8884d8'
       },
       {
-        ticker: tickerById(23),
-        allocationPercentage: 23.1,
-        allocationAmount: 23.1 * 100,
-        fill: '#FFBB28'
+        ticker: tickerBySymbol('XOM'),
+        allocationPercentage: 15,
+        allocationAmount: 15 * 100,
+        fill: '#83a6ed'
       },
       {
-        ticker: tickerById(10),
-        allocationPercentage: 15.3,
-        allocationAmount: 15.3 * 100,
-        fill: '#00C49F'
+        ticker: tickerBySymbol('JNJ'),
+        allocationPercentage: 17,
+        allocationAmount: 17 * 100,
+        fill: '#8dd1e1'
       },
       {
-        ticker: tickerById(4),
-        allocationPercentage: 11.8,
-        allocationAmount: 11.8 * 100,
-        fill: '#FF8042'
+        ticker: tickerBySymbol('TLT'),
+        allocationPercentage: 30,
+        allocationAmount: 30 * 100,
+        fill: '#82ca9d'
+      },
+      {
+        ticker: tickerBySymbol('JPM'),
+        allocationPercentage: 12,
+        allocationAmount: 12 * 100,
+        fill: '#a4de6c'
+      },
+      {
+        ticker: tickerBySymbol('MMM'),
+        allocationPercentage: 6,
+        allocationAmount: 6 * 100,
+        fill: '#d0ed57'
       }
     ]
+    // next ffc658
 
     let trades = [
       {
-        ticker: tickerById(8),
-        buyDate: '3/20/2017',
-        sellDate: '9/5/2017',
-        allocationAmount: 49.8 * 100
+        ticker: tickerBySymbol('SNAP'),
+        buyDate: today(),
+        sellDate: '9/18/2017',
+        allocationAmount: 20 * 100
       },
       {
-        ticker: tickerById(23),
-        buyDate: '3/20/2017',
+        ticker: tickerBySymbol('XOM'),
+        buyDate: today(),
         sellDate: '9/7/2017',
-        allocationAmount: 23.1 * 100
+        allocationAmount: 15 * 100
       },
       {
-        ticker: tickerById(10),
-        buyDate: '3/22/2017',
-        sellDate: '8/31/2017',
-        allocationAmount: 15.3 * 100
+        ticker: tickerBySymbol('JNJ'),
+        buyDate: today(),
+        sellDate: '10/16/2017',
+        allocationAmount: 17 * 100
       },
       {
-        ticker: tickerById(4),
-        buyDate: '3/20/2017',
-        sellDate: '9/5/2017',
-        allocationAmount: 11.8 * 100
+        ticker: tickerBySymbol('JPM'),
+        buyDate: today(),
+        sellDate: '10/12/2017',
+        allocationAmount: 12 * 100
+      },
+      {
+        ticker: tickerBySymbol('MMM'),
+        buyDate: today(),
+        sellDate: '11/20/2017',
+        allocationAmount: 6 * 100
+      },
+      {
+        ticker: tickerBySymbol('TLT'),
+        buyDate: today(),
+        sellDate: '1/29/2018',
+        allocationAmount: 30 * 100
       }
-    ]
-    let kpis = [
-      {label: 'Estimated Return', value: '27.9%'},
-      {label: 'Estimated Return', value: '$' + Formatting.numberWithCommas(27.9 * 100) + '.00'}
     ]
     let { configureTradeDialog } = this.state
     return (
@@ -94,32 +120,32 @@ export default class StrategySection extends React.Component {
             <Item.Group divided>
               <Item>
                 <Item.Image size='tiny' src={trade_robinhood} />
-                <Item.Content verticalAlign='middle'>Robinhood</Item.Content>
-                <Item.Extra>
+                <Item.Content verticalAlign='middle'>
                   <Button floated='right'>
                     <Icon name='plus'></Icon> Connect
                   </Button>
-                </Item.Extra>
+                  Robinhood
+                </Item.Content>
               </Item>
 
               <Item>
                 <Item.Image size='tiny' src={trade_schwab} />
-                <Item.Content verticalAlign='middle'>Charles Schwab</Item.Content>
-                <Item.Extra>
+                <Item.Content verticalAlign='middle'>
                   <Button floated='right'>
                     <Icon name='plus'></Icon> Connect
                   </Button>
-                </Item.Extra>
+                  Charles Schwab
+                </Item.Content>
               </Item>
 
               <Item>
                 <Item.Image size='tiny' src={trade_etrade} />
-                <Item.Content verticalAlign='middle'>TD Ameritrade</Item.Content>
-                <Item.Extra>
+                <Item.Content verticalAlign='middle'>
                   <Button floated='right'>
                     <Icon name='plus'></Icon> Connect
                   </Button>
-                </Item.Extra>
+                  E-Trade
+                </Item.Content>
               </Item>
             </Item.Group>
           </Modal.Content>
@@ -176,11 +202,11 @@ export default class StrategySection extends React.Component {
             <Grid.Column width={16}>
               <Statistic.Group widths='two'>
                 <Statistic>
-                  <Statistic.Value>27.9%</Statistic.Value>
+                  <Statistic.Value>7.11%</Statistic.Value>
                   <Statistic.Label>Percentage Return</Statistic.Label>
                 </Statistic>
                 <Statistic>
-                  <Statistic.Value>{'$' + Formatting.numberWithCommas(27.9 * 100) + '.00'}</Statistic.Value>
+                  <Statistic.Value>{'$' + Formatting.numberWithCommas(7.11 * 100) + '.00'}</Statistic.Value>
                   <Statistic.Label>Absolute Return</Statistic.Label>
                 </Statistic>
               </Statistic.Group>
